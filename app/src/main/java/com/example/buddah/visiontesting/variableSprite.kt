@@ -4,9 +4,6 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 
-/**
- * Player Class.
- */
 
 class variableSprite(private val image: Bitmap, x: Long, y: Long) {
 
