@@ -20,10 +20,6 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
     }
 
-
-
-
-
 }
 
 

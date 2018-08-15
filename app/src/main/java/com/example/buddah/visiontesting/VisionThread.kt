@@ -1,20 +1,10 @@
 package com.example.buddah.visiontesting
 
 import android.graphics.Canvas
-import android.os.Handler
 import android.view.SurfaceHolder
-import android.R.attr.delay
-import android.app.usage.UsageEvents
-import android.util.EventLog
-import android.view.KeyEvent
-import android.view.KeyEvent.KEYCODE_VOLUME_UP
-import android.view.KeyEvent.KEYCODE_VOLUME_DOWN
-
-
-
 
 //Created by arjun on 26/12/17
-//modified by lempia 22/7/18
+//heavily modified by lempia 22/7/18
 
 class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionView: VisionView) : Thread() {
     private var running: Boolean = false
@@ -40,6 +30,9 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
         var waitTime: Long
         val targetTime = (1000 / .25).toLong()//changes every four seconds
         val targetUpdateTime = 3
+        buttonCheck = false
+
+
 
         while (running) {
             startTime = System.nanoTime()
@@ -49,7 +42,6 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
 
                 canvas = this.surfaceHolder.lockCanvas()
                 synchronized(surfaceHolder) {
-                    var buttonCheck = false
                     this.visionView.update()
                     this.visionView.draw(canvas!!, "left")
 
@@ -64,10 +56,14 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
                 if (canvas != null) {
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas)
-                        if (buttonCheck == null || buttonCheck == false)
+                        if (buttonCheck == null || buttonCheck == false) {
                             visionView.updateResults(false)
-                        if (buttonCheck == true)
+                            buttonCheck = false
+                        }
+                        if (buttonCheck == true) {
                             visionView.updateResults(true)
+                            buttonCheck = false
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

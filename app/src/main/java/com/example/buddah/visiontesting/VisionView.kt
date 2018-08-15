@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.media.MediaPlayer
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import java.util.*
@@ -99,6 +100,12 @@ class VisionView(context: Context, attributes: AttributeSet)
             currentPair = x
         }
         */
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        thread.updateCurrentBoolean()
+        println("Touched!")
+        return true
     }
 }
 //helper function for randomly pulling points from list.
