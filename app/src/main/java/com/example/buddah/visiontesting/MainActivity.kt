@@ -2,7 +2,10 @@ package com.example.buddah.visiontesting
 
 
 import android.app.Activity
+import android.media.AudioManager
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
 import android.view.WindowManager
 
 class MainActivity : Activity() {
@@ -16,4 +19,11 @@ class MainActivity : Activity() {
 
         setContentView(R.layout.activity_main)
     }
+
+
+
+
+
 }
+
+

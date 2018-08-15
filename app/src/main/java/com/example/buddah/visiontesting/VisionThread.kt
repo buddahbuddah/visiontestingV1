@@ -3,9 +3,12 @@ package com.example.buddah.visiontesting
 import android.graphics.Canvas
 import android.os.Handler
 import android.view.SurfaceHolder
-import com.example.buddah.visiontesting.Timer.DelayCallback
 import android.R.attr.delay
-
+import android.app.usage.UsageEvents
+import android.util.EventLog
+import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_VOLUME_UP
+import android.view.KeyEvent.KEYCODE_VOLUME_DOWN
 
 
 
@@ -17,11 +20,12 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
     private var running: Boolean = false
     private val targetFPS = 50 // frames per second, the rate at which you would like to refresh the Canvas
     private var locations = LocationResults()
+    private var buttonCheck: Boolean? = null
 
     init {
 
         locations.printList()
-        var ListPoints= locations.getPointList()
+        var ListPoints = locations.getPointList()
         println(ListPoints)
 
     }
@@ -42,14 +46,17 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
             canvas = null
 
             try {
-                // locking the canvas allows us to draw on to it
-                // this is the important part
-                    canvas = this.surfaceHolder.lockCanvas()
-                    synchronized(surfaceHolder) {
 
-                        this.visionView.update()
-                        this.visionView.draw(canvas!!, "left")
-                    }
+                canvas = this.surfaceHolder.lockCanvas()
+                synchronized(surfaceHolder) {
+                    var buttonCheck = false
+                    this.visionView.update()
+                    this.visionView.draw(canvas!!, "left")
+
+
+
+                }
+
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -57,6 +64,10 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
                 if (canvas != null) {
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas)
+                        if (buttonCheck == null || buttonCheck == false)
+                            visionView.updateResults(false)
+                        if (buttonCheck == true)
+                            visionView.updateResults(true)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -74,8 +85,18 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
         }
     }
 
-    companion object {
-        private var canvas: Canvas? = null
+
+        companion object {
+            private var canvas: Canvas? = null
+        }
+
+        fun updateCurrentBoolean(){
+            buttonCheck = true
+        }
     }
 
-}
+
+
+
+
+

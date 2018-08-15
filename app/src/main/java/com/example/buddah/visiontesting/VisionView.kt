@@ -3,6 +3,7 @@ package com.example.buddah.visiontesting
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.media.MediaPlayer
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -19,8 +20,12 @@ class VisionView(context: Context, attributes: AttributeSet)
     //instantiates the testing node
     private var variableSprite: variableSprite? = null
     private var locations = LocationResults()
+    private var clickPlayer = MediaPlayer.create(context, R.raw.click)
     //used to store the list of testing points to pull from randomly.
     var ListPoints: List<Pair<Int,Int>>?
+    private var visionResults = VisionResults()
+    var currentPair: Pair<Int,Int> = Pair(0,0)
+
 
     init {
 
@@ -66,20 +71,34 @@ class VisionView(context: Context, attributes: AttributeSet)
         centerSprite!!.update()
 
     }
+    fun updateResults(isSeen: Boolean){
+        visionResults.addPoint(currentPair)
+        visionResults.addResult(currentPair, isSeen)
+    }
 
     fun draw(canvas: Canvas, orientation: String){
         super.draw(canvas)
         //implement left vs right, possibly left/right with different centers
+        /*
         centerSprite!!.drawLeft(canvas)
         centerSprite!!.drawRight(canvas)
-        //editing variablesprite to draw at a random point.
-        /*
-        val toPlug = ListPoints!![(0 until ListPoints!!.size).random()]
-        variableSprite!!.draw(canvas, toPlug)
         */
+        clickPlayer.start()
+
+        //editing variablesprite to draw at a random point.
+
+        val toPlug = ListPoints!![(0 until ListPoints!!.size).random()] //randomly selects points
+        currentPair = toPlug                                                        //perhaps remove them from list
+        variableSprite!!.draw(canvas, toPlug)
+
+
+        //loop used for testing
+        /*
         for (x in ListPoints!!){
             variableSprite!!.draw(canvas, x)
+            currentPair = x
         }
+        */
     }
 }
 //helper function for randomly pulling points from list.
