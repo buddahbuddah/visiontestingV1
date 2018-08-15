@@ -11,12 +11,14 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
     private val targetFPS = 50 // frames per second, the rate at which you would like to refresh the Canvas
     private var locations = LocationResults()
     private var buttonCheck: Boolean? = null
+    var count: Int
 
     init {
 
         locations.printList()
-        var ListPoints = locations.getPointList()
-        println(ListPoints)
+        count = 0
+        //var ListPoints = locations.getPointList()
+        //println(ListPoints)
 
     }
 
@@ -39,24 +41,24 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
             canvas = null
 
             try {
-
+//have to redo the logic here.
                 canvas = this.surfaceHolder.lockCanvas()
                 synchronized(surfaceHolder) {
-                    this.visionView.update()
-                    this.visionView.draw(canvas!!, "left")
-
-
-
+                        this.visionView.update()
+                        this.visionView.draw(canvas!!)
                 }
-
 
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
                 if (canvas != null) {
+                    //if boolean can be true, false or null, is it really boolean?
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas)
-                        if (buttonCheck == null || buttonCheck == false) {
+                        if (buttonCheck == null) {
+                            visionView.incrementFailCounter()
+                        }
+                        if (buttonCheck == false) {
                             visionView.updateResults(false)
                             buttonCheck = false
                         }
@@ -89,6 +91,11 @@ class VisionThread(private val surfaceHolder: SurfaceHolder, private val visionV
         fun updateCurrentBoolean(){
             buttonCheck = true
         }
+
+        fun changeBooleanToNull(){
+            buttonCheck = null
+        }
+
     }
 
 

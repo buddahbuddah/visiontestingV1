@@ -7,6 +7,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import java.util.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -21,4 +22,18 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("com.example.buddah.visiontesting", appContext.packageName)
     }
+
+
+    @Test
+    fun testRandom() {
+        // Context of the app under test.
+        var x = 0
+        while (x < 10) {
+            println((0 until 4).random())
+            x++
+        }
+    }
 }
+//helper function for randomly pulling points from list.
+fun ClosedRange<Int>.random() =
+        Random().nextInt((endInclusive+1)-start) + start

@@ -16,26 +16,38 @@ class VisionView(context: Context, attributes: AttributeSet)
         SurfaceHolder.Callback {
 
     private val thread:  VisionThread
-    //instantiates the center focal point
     private var centerSprite: centerSprite? = null
-    //instantiates the testing node
     private var variableSprite: variableSprite? = null
     private var locations = LocationResults()
     private var clickPlayer = MediaPlayer.create(context, R.raw.click)
-    //used to store the list of testing points to pull from randomly.
-    var ListPoints: List<Pair<Int,Int>>?
+    var ListPointsLeftList: List<Pair<Int,Int>>?
+    var ListPointsLeft : MutableList<Pair<Int,Int>>
+    var ListPointsRightList: List<Pair<Int,Int>>?
+    var ListPointsRight : MutableList<Pair<Int,Int>>
     private var visionResults = VisionResults()
     var currentPair: Pair<Int,Int> = Pair(0,0)
+    //for checking blank vision screens
+    var controlCount : Int
+    //for right/left selection. default false = left, function to change it to true for second half of test
+    var leftOrRight : Boolean
+    var controlBoolean : Boolean
 
 
     init {
-
-        //not yet dynamically building a specific subset. Building the entire subset.
-        ListPoints = locations.getPointList()
+        //why is list conversion so painful?
+        ListPointsLeftList = locations.getPointListLeft()
+        var tempLeft = ListPointsLeftList!!.toTypedArray()
+        ListPointsLeft = tempLeft.toMutableList()
+        ListPointsRightList = locations.getPointListRight()
+        var tempRight = ListPointsRightList!!.toTypedArray()
+        ListPointsRight = tempRight.toMutableList()
         //locations.printList()
         //add callback
         holder.addCallback(this)
         thread = VisionThread(holder, this)
+        controlCount = 0
+        leftOrRight = false
+        controlBoolean = false
 
     }
 
@@ -67,8 +79,7 @@ class VisionView(context: Context, attributes: AttributeSet)
     }
 
     fun update() {
-        //thread is running on separate thread, can do timing updates based on this
-       // myTimer.schedule(centerSprite!!.update(), 4000)
+        //does nothing at all
         centerSprite!!.update()
 
     }
@@ -77,36 +88,87 @@ class VisionView(context: Context, attributes: AttributeSet)
         visionResults.addResult(currentPair, isSeen)
     }
 
-    fun draw(canvas: Canvas, orientation: String){
+    fun incrementFailCounter(){
+        visionResults.incrementControl()
+        println(visionResults.liarPoints)
+        println("liar!")
+    }
+
+    override fun draw(canvas: Canvas){
         super.draw(canvas)
-        //implement left vs right, possibly left/right with different centers
-        /*
-        centerSprite!!.drawLeft(canvas)
-        centerSprite!!.drawRight(canvas)
-        */
+
         clickPlayer.start()
+///*
 
-        //editing variablesprite to draw at a random point.
+        //take this random mod 4 to get ranges between 11 and 23 dead draws on average
+        val chooseRandom = (1 until 5).random()
 
-        val toPlug = ListPoints!![(0 until ListPoints!!.size).random()] //randomly selects points
-        currentPair = toPlug                                                        //perhaps remove them from list
-        variableSprite!!.draw(canvas, toPlug)
+        //logic for control phases. Stops after 15 counts, might be less.
+        if (chooseRandom % 4 == 0 && controlCount < 15){
+            //increment control count
+            //skip draw phase
+            controlCount ++
+            controlBoolean = true
+            if (leftOrRight == false)
+                centerSprite!!.drawLeft(canvas)
+            else
+                centerSprite!!.drawRight(canvas)
+        }
+        else if (ListPointsLeft!!.isNotEmpty() && leftOrRight == false){
+            controlBoolean = false
+            centerSprite!!.drawLeft(canvas)
+            val toTake = (0 until ListPointsLeft!!.size).random()
+            val toPlug = ListPointsLeft!![toTake]
+            currentPair = toPlug
+            variableSprite!!.draw(canvas, toPlug)
+            ListPointsLeft.remove(toPlug)
+        }
 
+        else if (ListPointsRight!!.isNotEmpty() && leftOrRight == true){
+            controlBoolean = false
+            centerSprite!!.drawRight(canvas)
+            val toTake = (0 until ListPointsRight!!.size).random()
+            val toPlug = ListPointsRight!![toTake]
+            currentPair = toPlug
+            variableSprite!!.draw(canvas, toPlug)
+            ListPointsRight.remove(toPlug)
+        }
 
-        //loop used for testing
+        //else go to final screen/inbetween screen depending on leftOrRight variable
+
+//*/
+
+            //go to final screen and pass through the visionresults.
+
+        //loop used for testing also will be used for
         /*
-        for (x in ListPoints!!){
+        for (x in ListPointsLeft!!){
             variableSprite!!.draw(canvas, x)
             currentPair = x
+        }
+        for (y in ListPointsRight!!){
+            variableSprite!!.draw(canvas, y)
+            currentPair = y
         }
         */
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        thread.updateCurrentBoolean()
+        if (controlBoolean == false)
+            thread.updateCurrentBoolean()
+        else
+            thread.changeBooleanToNull()
+
         println("Touched!")
+
         return true
     }
+
+    fun setUpForRightTest(){
+        controlCount = 0
+        leftOrRight = true
+    }
+
 }
 //helper function for randomly pulling points from list.
 fun ClosedRange<Int>.random() =

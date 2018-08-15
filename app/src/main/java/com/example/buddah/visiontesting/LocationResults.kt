@@ -29,10 +29,10 @@ class LocationResults {
         xListLeft.add(xMiddleLeft/5)
         xListLeft.add(xMiddle - xMiddleLeft/5)//using relative middle
         //third row
-        xListLeft.add(xMiddleLeft - (4* xMiddleLeft/6)) //check this thing
-        xListLeft.add(xMiddleLeft - (2* xMiddleLeft/6)) //check this thing
-        xListLeft.add(xMiddleLeft + (2* xMiddleLeft/6)) //check this thing
-        xListLeft.add(xMiddleLeft + (4* xMiddleLeft/6)) //check this thing
+        xListLeft.add(xMiddleLeft - (4* xMiddleLeft/6))
+        xListLeft.add(xMiddleLeft - (2* xMiddleLeft/6))
+        xListLeft.add(xMiddleLeft + (2* xMiddleLeft/6))
+        xListLeft.add(xMiddleLeft + (4* xMiddleLeft/6))
         //fourth row
         xListLeft.add(xMiddleLeft - (xMiddleLeft/12))
         xListLeft.add(xMiddleLeft + (xMiddleLeft/12))
@@ -45,7 +45,7 @@ class LocationResults {
         xListLeft.add(xMiddleLeft - xMiddleLeft/3 * 2)
         xListLeft.add(xMiddleLeft - xMiddleLeft/3)
         xListLeft.add(xMiddleLeft + xMiddleLeft/3)
-        xListLeft.add(xMiddleLeft - xMiddleLeft/3 * 2)
+        xListLeft.add(xMiddleLeft + xMiddleLeft/3 * 2)
         //seventh row
         xListLeft.add(xMiddleLeft - xMiddleLeft/12)
         xListLeft.add(xMiddleLeft + xMiddleLeft/12)
@@ -225,7 +225,7 @@ class LocationResults {
         println(yListLeft)
     }
 
-    fun getPointList(): List<Pair<Int,Int>>?{
+    fun getPointListLeft(): List<Pair<Int,Int>>?{
         val returnList = mutableListOf<Pair<Int, Int>>()
 
         var selector = 0
@@ -233,14 +233,19 @@ class LocationResults {
             returnList.add(Pair(x, yListLeft.get(selector)))
             selector ++
         }
-        selector = 0
+        return returnList
+
+    }
+
+    fun getPointListRight(): List<Pair<Int,Int>>?{
+        val returnList = mutableListOf<Pair<Int,Int>>()
+
+        var selector = 0
         for (x in xListRight){
             returnList.add(Pair(x, yListLeft.get(selector)))
             selector ++
         }
-
         return returnList
-
     }
 
 }
