@@ -38,6 +38,7 @@ class VisionView(context: Context, attributes: AttributeSet)
         ListPointsLeftList = locations.getPointListLeft()
         var tempLeft = ListPointsLeftList!!.toTypedArray()
         ListPointsLeft = tempLeft.toMutableList()
+        //This is dumb lol
         ListPointsRightList = locations.getPointListRight()
         var tempRight = ListPointsRightList!!.toTypedArray()
         ListPointsRight = tempRight.toMutableList()
