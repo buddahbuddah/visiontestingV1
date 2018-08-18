@@ -1,33 +1,32 @@
 package com.example.buddah.visiontesting
 
-import android.app.Activity
+import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import android.widget.Button
-import kotlinx.android.synthetic.main.start_activity.*
 
-
-class StartActivity : Activity() {
+class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
-        // remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
-        setContentView(R.layout.start_activity)
+        setContentView(R.layout.activity_start)
 
-        val startButton = findViewById<Button>(R.id.startButton)
+
+        val startButton = findViewById<Button>(R.id.StartTest)
         startButton.setOnClickListener {
-            setContentView(R.layout.activity_main)
+            setContentView(R.layout.activity_test)
         }
 
-        val configureButton = findViewById<Button>(R.id.configureButton)
-        configureButton.setOnClickListener {
-            //setContentView(R.layout.)
+        val configureButton = findViewById<Button>(R.id.Configuration)
+
+        startButton.setOnClickListener {
+            setContentView(R.layout.activity_test)
         }
     }
-}
 
+}

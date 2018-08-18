@@ -1,10 +1,8 @@
 package com.example.buddah.visiontesting
 
-class VisionResults () {
-    //stores points/results in hashmap
+class TestResults () {
+
     var resultsMap = HashMap<Pair<Int,Int>, Boolean>()
-    //used for saving points after they are removed from the built list in VisionView
-    //allows us to have a full list of points.
     var pointList = mutableListOf<Pair<Int,Int>>()
     var liarPoints = 0
 
