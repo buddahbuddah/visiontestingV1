@@ -11,7 +11,7 @@ class TestActivity : Activity() {
 
         // remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                WindowManager.LayoutParams.TYPE_APPLICATION_MEDIA)
 
         setContentView(R.layout.activity_test)
     }
