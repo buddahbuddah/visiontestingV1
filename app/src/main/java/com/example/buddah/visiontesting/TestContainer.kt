@@ -67,6 +67,12 @@ class TestContainer {
 
         return Pair(leftX, leftY)
     }
+    fun getCenter(): Pair<Int,Int> {
+        val X = 0
+        val Y = 0
+
+        return Pair(X,Y)
+    }
 
     fun getCenterRight(): Pair<Int,Int>{
         val rightX = screenWidth/4 + screenWidth/2

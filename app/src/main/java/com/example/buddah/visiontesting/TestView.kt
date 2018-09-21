@@ -15,18 +15,22 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private val thread: TestThread
     private val clickPlayer = MediaPlayer.create(context, R.raw.click)
     private val TestContainer = TestContainer()
-    private val Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.test))
+    private val Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.transcircle25ffffff))
+    private val Center = Spot(BitmapFactory.decodeResource(resources, R.drawable.redcircle25px))
+    private val background = Spot(BitmapFactory.decodeResource(resources, R.drawable.backgroundddddd))
     private var TestResults = TestResults()
     //private val Center = Spot()
     //private val Background = Spot()
     private var Side : Boolean
     private var threadControl : Boolean
+    private var resultsBoolean : Boolean
 
 
     init {
-        println("got to init")
+        //println("got to init")
         Side = false
         threadControl = false
+        resultsBoolean = false
         // add callback
         holder.addCallback(this)
 
@@ -77,23 +81,37 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     //does not need to be this complex
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
+        background.draw(canvas, TestContainer.getCenter())
         clickPlayer.start()
-
+        //check if time to display results.
+        if (TestContainer.checkLeft() && TestContainer.checkRight()){
+            resultsBoolean = true
+        }
+        //draw results
+        if (resultsBoolean == true){
+            //display all results.
+            var results : HashMap<Pair<Int,Int>,Boolean> = TestResults.getResults()
+            var resultkeys = results.keys
+            for (entry in resultkeys){
+                if (results[entry] == false)
+                    Spot.draw(canvas, entry)
+            }
+        }
         //Control Check
         if (TestContainer.checkTheOdds()) {
             threadControl = true
             if (!Side) {
-                Spot.draw(canvas, TestContainer.getCenterLeft())
+                Center.draw(canvas, TestContainer.getCenterLeft())
             }
             else
-                Spot.draw(canvas, TestContainer.getCenterRight())
+                Center.draw(canvas, TestContainer.getCenterRight())
         }
 
         else {
             //Left / Right Check
             threadControl = false
             if (!Side) {
-                Spot.draw(canvas, TestContainer.getCenterLeft())
+                Center.draw(canvas, TestContainer.getCenterLeft())
                 //If Left is Empty, switch to right side
                 if (!TestContainer.checkLeft())
                     Spot.draw(canvas, TestContainer.getNextPointLeft()!!)
@@ -102,7 +120,7 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 //maybe display something inbetween tests
             }
             else {
-                Spot.draw(canvas, TestContainer.getCenterRight())
+                Center.draw(canvas, TestContainer.getCenterRight())
                 if (!TestContainer.checkRight())
                     Spot.draw(canvas, TestContainer.getNextPointRight()!!)
                 //else
