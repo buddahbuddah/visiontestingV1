@@ -15,8 +15,8 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private val thread: TestThread
     private val clickPlayer = MediaPlayer.create(context, R.raw.click)
     private val TestContainer = TestContainer()
-    private val Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.transcircle25ffffff))
-    private val Center = Spot(BitmapFactory.decodeResource(resources, R.drawable.redcircle25px))
+    private val Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.whitecircle10pxffffff))
+    private val Center = Spot(BitmapFactory.decodeResource(resources, R.drawable.redcircle10px))
     private val background = Spot(BitmapFactory.decodeResource(resources, R.drawable.backgroundddddd))
     private var TestResults = TestResults()
     //private val Center = Spot()
@@ -24,6 +24,9 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private var Side : Boolean
     private var threadControl : Boolean
     private var resultsBoolean : Boolean
+    private var pause: Boolean
+    private var pauseChecker: Int
+    private var finalTestCount: Int
 
 
     init {
@@ -33,7 +36,9 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
         resultsBoolean = false
         // add callback
         holder.addCallback(this)
-
+        pause = false
+        pauseChecker = 0
+        finalTestCount = 0
         // instantiate the test thread
         thread = TestThread(holder, this)
     }
@@ -82,54 +87,65 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         background.draw(canvas, TestContainer.getCenter())
-        clickPlayer.start()
         //check if time to display results.
-        if (TestContainer.checkLeft() && TestContainer.checkRight()){
+        if (TestContainer.checkLeft() && pauseChecker == 0) {
+            pause = true
+        }
+        if (TestContainer.checkLeft() && TestContainer.checkRight()) {
+            finalTestCount = TestResults.getControl()
             resultsBoolean = true
         }
         //draw results
-        if (resultsBoolean == true){
+        if (resultsBoolean == true) {
+            print("Final Control : " )
+            print(finalTestCount)
             //display all results.
-            var results : HashMap<Pair<Int,Int>,Boolean> = TestResults.getResults()
+            var results: HashMap<Pair<Int, Int>, Boolean> = TestResults.getResults()
             var resultkeys = results.keys
-            for (entry in resultkeys){
+            for (entry in resultkeys) {
                 if (results[entry] == false)
                     Spot.draw(canvas, entry)
             }
         }
-        //Control Check
-        if (TestContainer.checkTheOdds()) {
-            threadControl = true
-            if (!Side) {
-                Center.draw(canvas, TestContainer.getCenterLeft())
-            }
-            else
-                Center.draw(canvas, TestContainer.getCenterRight())
-        }
-
-        else {
-            //Left / Right Check
-            threadControl = false
-            if (!Side) {
-                Center.draw(canvas, TestContainer.getCenterLeft())
-                //If Left is Empty, switch to right side
-                if (!TestContainer.checkLeft())
-                    Spot.draw(canvas, TestContainer.getNextPointLeft()!!)
-                else
-                    Side = true
-                //maybe display something inbetween tests
-            }
-            else {
-                Center.draw(canvas, TestContainer.getCenterRight())
-                if (!TestContainer.checkRight())
-                    Spot.draw(canvas, TestContainer.getNextPointRight()!!)
+        if (pause != true){
+            //Control Check
+            if (TestContainer.checkTheOdds()) {
+                clickPlayer.start()
+                threadControl = true
+                if (!Side) {
+                    Center.draw(canvas, TestContainer.getCenterLeft())
+                } else if (!resultsBoolean)
+                    Center.draw(canvas, TestContainer.getCenterRight())
+            } else {
+                //Left / Right Check
+                clickPlayer.start()
+                threadControl = false
+                if (!Side) {
+                    Center.draw(canvas, TestContainer.getCenterLeft())
+                    //If Left is Empty, switch to right side
+                    if (!TestContainer.checkLeft())
+                        Spot.draw(canvas, TestContainer.getNextPointLeft()!!)
+                    else
+                        Side = true
+                    //maybe display something inbetween tests
+                } else if (!TestContainer.checkRight()) {
+                    Center.draw(canvas, TestContainer.getCenterRight())
+                    if (!TestContainer.checkRight())
+                        Spot.draw(canvas, TestContainer.getNextPointRight()!!)
                 //else
                 //start new activity
+                }
             }
         }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+
+        if (pause == true && pauseChecker == 0){
+            pause = false
+            pauseChecker++
+        }
+
         if (!threadControl)
             thread.updateCurrentBoolean()
         else

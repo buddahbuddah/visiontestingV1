@@ -8,7 +8,7 @@ class TestThread(private val surfaceHolder: SurfaceHolder, private val TestView:
     private var running: Boolean = false
     private var buttonCheck : Boolean? = false
 
-    private val targetFPS = 1 // frames per second, the rate at which you would like to refresh the Canvas
+    private val targetFPS = 4 // frames per second, the rate at which you would like to refresh the Canvas
 
     fun setRunning(isRunning: Boolean) {
         this.running = isRunning

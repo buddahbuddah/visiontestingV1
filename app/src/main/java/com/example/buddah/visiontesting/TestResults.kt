@@ -25,6 +25,10 @@ class TestResults () {
         liarPoints ++
     }
 
+    fun getControl(): Int {
+        return liarPoints
+    }
+
     // **** note ****
     //get liarPoints exists as part of the data class.
     //get pointList exists as part of the data class.
