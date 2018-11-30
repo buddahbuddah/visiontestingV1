@@ -18,7 +18,9 @@ class TestContainer {
     private val yListLeft = mutableListOf<Int>()
 
     private val ListLeft : MutableList<Pair<Int,Int>>
+    private val LeftValueMap : MutableMap<Pair<Int,Int>, Int>
     private val ListRight : MutableList<Pair<Int,Int>>
+    private val RightValueMap : MutableMap<Pair<Int,Int>, Int>
 
     private var ControlCount : Int
     var currentPair : Pair<Int,Int>
@@ -26,9 +28,18 @@ class TestContainer {
     init {
         BuildLists()
         ListLeft = getPointListLeft()
+        LeftValueMap = getValueListLeft()
         ListRight = getPointListRight()
+        RightValueMap = getValueListRight()
         ControlCount = 0
         currentPair = Pair(0,0)
+    }
+
+    fun removeLeft(input: Pair<Int,Int>){
+        ListLeft.remove(input)
+    }
+    fun removeRight(input: Pair<Int,Int>){
+        ListRight.remove(input)
     }
 
     fun getNextPointLeft(): Pair<Int,Int>? {
@@ -41,12 +52,13 @@ class TestContainer {
             return result
         }
         else return null
-
     }
 
     fun getNextPointRight(): Pair<Int,Int>? {
         if (!ListRight.isEmpty()) {
             val RandomIndex = (0 until ListRight.size).random()
+
+
             val result = ListRight[RandomIndex]
             ListRight.removeAt(RandomIndex)
             currentPair = result
@@ -109,6 +121,19 @@ class TestContainer {
 
     }
 
+    fun getValueListLeft(): MutableMap<Pair<Int,Int>, Int> {
+
+        val returnMap = mutableMapOf<Pair<Int,Int>, Int>()
+        var selector = 0
+
+        for (x in xListLeft){
+            val tempPair = Pair(x, yListLeft.get(selector))
+            returnMap[tempPair] = 20
+            selector++
+        }
+        return returnMap
+    }
+
     fun getPointListRight(): MutableList<Pair<Int,Int>>{
         val returnList = mutableListOf<Pair<Int,Int>>()
 
@@ -120,6 +145,18 @@ class TestContainer {
         return returnList
     }
 
+    fun getValueListRight(): MutableMap<Pair<Int,Int>, Int> {
+
+        val returnMap = mutableMapOf<Pair<Int,Int>, Int>()
+        var selector = 0
+
+        for (x in xListRight){
+            val tempPair = Pair(x, yListLeft.get(selector))
+            returnMap[tempPair] = 20
+            selector++
+        }
+        return returnMap
+    }
     fun ClosedRange<Int>.random() =
             Random().nextInt((endInclusive+1)-start) + start
 

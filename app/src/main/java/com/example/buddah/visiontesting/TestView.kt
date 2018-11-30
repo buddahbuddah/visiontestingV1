@@ -18,9 +18,7 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private val Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.whitecircle10pxffffff))
     private val Center = Spot(BitmapFactory.decodeResource(resources, R.drawable.redcircle10px))
     private val background = Spot(BitmapFactory.decodeResource(resources, R.drawable.backgroundddddd))
-    private var TestResults = TestResults()
-    //private val Center = Spot()
-    //private val Background = Spot()
+    private var TestResults = TestResults(TestContainer)
     private var Side : Boolean
     private var threadControl : Boolean
     private var resultsBoolean : Boolean
@@ -30,17 +28,15 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
 
 
     init {
-        //println("got to init")
         Side = false
         threadControl = false
         resultsBoolean = false
-        // add callback
         holder.addCallback(this)
         pause = false
         pauseChecker = 0
         finalTestCount = 0
-        // instantiate the test thread
         thread = TestThread(holder, this)
+
     }
 
 
@@ -92,6 +88,7 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
             pause = true
         }
         if (TestContainer.checkLeft() && TestContainer.checkRight()) {
+            thread.tellThreadDone()
             finalTestCount = TestResults.getControl()
             resultsBoolean = true
         }
@@ -103,11 +100,13 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
             var results: HashMap<Pair<Int, Int>, Boolean> = TestResults.getResults()
             var resultkeys = results.keys
             for (entry in resultkeys) {
-                if (results[entry] == false)
-                    Spot.draw(canvas, entry)
+                if (results[entry] == false) {
+                    Spot.drawBrightness(canvas, entry, TestResults.getBrightness(entry)!!.toFloat())
+
+                }
             }
         }
-        if (pause != true){
+        if (pause != true && resultsBoolean == false){
             //Control Check
             if (TestContainer.checkTheOdds()) {
                 clickPlayer.start()
@@ -123,21 +122,27 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
                 if (!Side) {
                     Center.draw(canvas, TestContainer.getCenterLeft())
                     //If Left is Empty, switch to right side
-                    if (!TestContainer.checkLeft())
-                        Spot.draw(canvas, TestContainer.getNextPointLeft()!!)
+                    if (!TestContainer.checkLeft()) {
+                        val tempPair = TestResults.getNextPointLeft()!!
+                        Spot.drawBrightness(canvas, tempPair,
+                                TestResults.getBrightness(tempPair)!!.toFloat())
+                    }
                     else
                         Side = true
                     //maybe display something inbetween tests
                 } else if (!TestContainer.checkRight()) {
                     Center.draw(canvas, TestContainer.getCenterRight())
-                    if (!TestContainer.checkRight())
-                        Spot.draw(canvas, TestContainer.getNextPointRight()!!)
-                //else
+                    if (!TestContainer.checkRight()) {
+                        val tempPair = TestResults.getNextPointRight()!!
+                        Spot.drawBrightness(canvas, tempPair,
+                                TestResults.getBrightness(tempPair)!!.toFloat())
+                    }
                 //start new activity
                 }
             }
         }
     }
+
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
 

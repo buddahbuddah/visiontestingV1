@@ -7,6 +7,8 @@ import android.view.SurfaceHolder
 class TestThread(private val surfaceHolder: SurfaceHolder, private val TestView: TestView) : Thread() {
     private var running: Boolean = false
     private var buttonCheck : Boolean? = false
+    private var done : Boolean = false
+
 
     private val targetFPS = 4 // frames per second, the rate at which you would like to refresh the Canvas
 
@@ -33,7 +35,9 @@ class TestThread(private val surfaceHolder: SurfaceHolder, private val TestView:
                     this.TestView.draw(canvas!!)
 
                     if (buttonCheck == null) {
-                        TestView.incrementFailCounter()
+                        if (!done)
+                            TestView.incrementFailCounter()
+                        buttonCheck = false
                     }
                     if (buttonCheck == false) {
                         TestView.updateResults(false)
@@ -77,6 +81,10 @@ class TestThread(private val surfaceHolder: SurfaceHolder, private val TestView:
 
     fun changeBooleanToNull(){
         buttonCheck = null
+    }
+
+    fun tellThreadDone(){
+        done = true
     }
 
 }
