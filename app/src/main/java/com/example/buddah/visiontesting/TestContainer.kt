@@ -36,6 +36,9 @@ class TestContainer {
     }
 
     fun removeLeft(input: Pair<Int,Int>){
+        println("Removing left from inside test container")
+        println("New List: ")
+        println(ListLeft)
         ListLeft.remove(input)
     }
     fun removeRight(input: Pair<Int,Int>){
@@ -47,7 +50,6 @@ class TestContainer {
         if (!ListLeft.isEmpty()) {
             val RandomIndex = (0 until ListLeft.size).random()
             val result = ListLeft[RandomIndex]
-            ListLeft.removeAt(RandomIndex)
             currentPair = result
             return result
         }
@@ -57,10 +59,7 @@ class TestContainer {
     fun getNextPointRight(): Pair<Int,Int>? {
         if (!ListRight.isEmpty()) {
             val RandomIndex = (0 until ListRight.size).random()
-
-
             val result = ListRight[RandomIndex]
-            ListRight.removeAt(RandomIndex)
             currentPair = result
             return result
         }
@@ -103,7 +102,6 @@ class TestContainer {
 
     }
 
-
     fun printList(){
         println(xListLeft)
         println(yListLeft)
@@ -113,9 +111,13 @@ class TestContainer {
         val returnList = mutableListOf<Pair<Int, Int>>()
 
         var selector = 0
-        for (x in xListLeft){
-            returnList.add(Pair(x, yListLeft.get(selector)))
-            selector ++
+        var i = 0
+        for (x in xListLeft) {
+            if (i < 3) {
+                returnList.add(Pair(x, yListLeft.get(selector)))
+                selector++
+                i++
+            }
         }
         return returnList
 
@@ -125,11 +127,14 @@ class TestContainer {
 
         val returnMap = mutableMapOf<Pair<Int,Int>, Int>()
         var selector = 0
-
+        var i = 0
         for (x in xListLeft){
-            val tempPair = Pair(x, yListLeft.get(selector))
-            returnMap[tempPair] = 20
-            selector++
+            if (i < 3) {
+                val tempPair = Pair(x, yListLeft.get(selector))
+                returnMap[tempPair] = 20
+                selector++
+                i++
+            }
         }
         return returnMap
     }
@@ -138,9 +143,13 @@ class TestContainer {
         val returnList = mutableListOf<Pair<Int,Int>>()
 
         var selector = 0
+        var i = 0
         for (x in xListRight){
-            returnList.add(Pair(x, yListLeft.get(selector)))
-            selector ++
+            if (i < 3) {
+                returnList.add(Pair(x, yListLeft.get(selector)))
+                selector++
+                i++
+            }
         }
         return returnList
     }
@@ -149,11 +158,14 @@ class TestContainer {
 
         val returnMap = mutableMapOf<Pair<Int,Int>, Int>()
         var selector = 0
-
+        var i = 0
         for (x in xListRight){
-            val tempPair = Pair(x, yListLeft.get(selector))
-            returnMap[tempPair] = 20
-            selector++
+            if (i < 3) {
+                val tempPair = Pair(x, yListLeft.get(selector))
+                returnMap[tempPair] = 20
+                selector++
+                i++
+            }
         }
         return returnMap
     }
