@@ -8,10 +8,13 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceView
 import android.view.SurfaceHolder
-
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
 
 
 class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
+
     private val thread: TestThread
     private val clickPlayer = MediaPlayer.create(context, R.raw.click)
     private val TestContainer = TestContainer()
@@ -26,7 +29,6 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private var pauseChecker: Int
     private var finalTestCount: Int
 
-
     init {
         Side = false
         threadControl = false
@@ -36,39 +38,8 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
         pauseChecker = 0
         finalTestCount = 0
         thread = TestThread(holder, this)
-
     }
 
-
-    override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
-
-        // start the game thread
-        thread.setRunning(true)
-        thread.start()
-    }
-
-    override fun surfaceChanged(surfaceHolder: SurfaceHolder, i: Int, i1: Int, i2: Int) {
-
-    }
-
-    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
-        var retry = true
-        while (retry) {
-            try {
-                thread.setRunning(false)
-                thread.join()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            retry = false
-        }
-    }
-
-    //maybe put background stuff here? it's called anyway
-    fun update() {
-
-    }
     fun updateResults(verdict: Boolean){
         TestResults.addPoint(TestContainer.currentPair)
         TestResults.addResult(TestContainer.currentPair, verdict)
@@ -88,19 +59,20 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
             pause = true
         }
         if (TestContainer.checkLeft() && TestContainer.checkRight()) {
+            this.saveToCache()
+            this.readFromCache()
             thread.tellThreadDone()
             finalTestCount = TestResults.getControl()
             resultsBoolean = true
         }
         //draw results
         if (resultsBoolean == true) {
-            print("Final Control : " )
             print(finalTestCount)
             //display all results.
-            var results: HashMap<Pair<Int, Int>, Boolean> = TestResults.getResults()
+            var results: HashMap<Pair<Int, Int>, Int> = TestResults.getValues()
             var resultkeys = results.keys
             for (entry in resultkeys) {
-                if (results[entry] == false) {
+                if (results[entry] != 1) {
                     Spot.drawBrightness(canvas, entry, TestResults.getBrightness(entry)!!.toFloat())
 
                 }
@@ -129,7 +101,7 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
                     }
                     else
                         Side = true
-                    //maybe display something inbetween tests
+
                 } else if (!TestContainer.checkRight()) {
                     Center.draw(canvas, TestContainer.getCenterRight())
                     if (!TestContainer.checkRight()) {
@@ -137,12 +109,10 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
                         Spot.drawBrightness(canvas, tempPair,
                                 TestResults.getBrightness(tempPair)!!.toFloat())
                     }
-                //start new activity
                 }
             }
         }
     }
-
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
 
@@ -157,5 +127,58 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
             thread.changeBooleanToNull()
 
         return true
+    }
+
+    fun saveToCache(){
+
+        val gson = Gson()
+        val toSave = gson.toJson(TestResults.getValues())
+
+        //writes .txt to cache file in the cache.
+        context.openFileOutput("temp.txt", Context.MODE_PRIVATE).use {
+            it.write(toSave.toByteArray())
+        }
+    }
+
+    fun readFromCache(){
+
+        val gson = Gson()
+
+        val file = File(context.filesDir, "temp.txt")
+        val fileContents : String = file.readText()
+        println("**********************************************")
+        println(fileContents)
+        println("**********************************************")
+        val finalMap : Map<Pair<Int,Int>, Int> = gson.fromJson(fileContents,
+                object : TypeToken<Map<Any,Any>>(){}.type)
+
+        println(finalMap)
+
+    }
+
+
+
+    override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
+        thread.setRunning(true)
+        thread.start()
+    }
+
+    override fun surfaceChanged(surfaceHolder: SurfaceHolder, i: Int, i1: Int, i2: Int) {
+    }
+
+    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
+        var retry = true
+        while (retry) {
+            try {
+                thread.setRunning(false)
+                thread.join()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            retry = false
+        }
+    }
+    fun update() {
     }
 }

@@ -1,5 +1,6 @@
 package com.example.buddah.visiontesting
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -23,10 +24,29 @@ class StartActivity : AppCompatActivity() {
         }
 
         val configureButton = findViewById<Button>(R.id.Configuration)
-
-        startButton.setOnClickListener {
-            setContentView(R.layout.activity_test)
+        configureButton.setOnClickListener {
+            Launch()
         }
+
+        val checkButton = findViewById<Button>(R.id.Check)
+        checkButton.setOnClickListener {
+            Check()
+        }
+
+    }
+
+    private fun Launch(){
+        val intent = Intent(this, ConfigureActivity::class.java)
+        startActivity(intent)
+    }
+
+
+    private fun Check(){
+
+        val fIn = openFileInput("configure.txt")
+        val fileContentsInt = fIn.read()
+        fIn.close()
+        println("The value of configure file is: " + fileContentsInt)
     }
 
 }

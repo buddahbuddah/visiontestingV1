@@ -20,7 +20,7 @@ class TestThread(private val surfaceHolder: SurfaceHolder, private val TestView:
         var startTime: Long
         var timeMillis: Long
         var waitTime: Long
-        val targetTime = (10000 / targetFPS).toLong()
+        val targetTime = (5000 / targetFPS).toLong()
         buttonCheck = false
 
         while (running) {

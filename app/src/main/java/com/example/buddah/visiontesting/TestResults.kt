@@ -24,6 +24,8 @@ class TestResults (input: TestContainer) {
         RightMode = buildValueMap(3)
     }
 
+
+
     fun getNextPointLeft(): Pair<Int,Int>? {
 
         var temp = TestContainer.getNextPointLeft()
@@ -45,7 +47,7 @@ class TestResults (input: TestContainer) {
         currentPair = temp!!
 
         while (RightMode[temp] == 4){
-            ValuesMap[temp!!] = LeftValue[temp]!!
+            ValuesMap[temp!!] = RightValue[temp]!!
             TestContainer.removeRight(temp!!)
             temp = TestContainer.getNextPointRight()
             currentPair = temp!!
@@ -64,7 +66,9 @@ class TestResults (input: TestContainer) {
         if (input in ListLeft){
             println("Input in ListLeft")
             println(LeftMode[input])
-
+            //mode 0
+            //if seen, switch to 1, decrease
+            //if not, switch to 2, increase
             if (LeftMode[input] == 0){
                 if (result == true){
                     println("changing to 1")
@@ -80,6 +84,9 @@ class TestResults (input: TestContainer) {
                     LeftValue[input] = temp
                 }
             }
+            //mode 1
+            //if seen, decrease brightness stay
+            //if not , change to four
             if (LeftMode[input] == 1){
                 if (result == false){
                     println("changing to four")
@@ -93,17 +100,28 @@ class TestResults (input: TestContainer) {
                     LeftValue[input] = temp
                 }
             }
+            //mode 2
+            //if seen, change to decrease brightness again 3
+            //if not, increase brightness stay
             if (LeftMode[input] == 2){
                 if (result == true){
-                    //ready for result storage.
+                    //check lowest bound
                     println("changing to 3")
                     LeftMode[input] = 3
                 }else{
                     //increase brightness
+                    if (LeftValue[input] == 0){
+                        LeftValue[input] = 1
+                        LeftMode[input] = 4
+                    }
                     var temp = ChangeBrightness(LeftValue[input]!!, false)
                     LeftValue[input] = temp
                 }
             }
+            //mode 3
+            //if seen, continue decreasing brightness
+            //if not, ready for storage.
+
             if (LeftMode[input] == 3){
                 if (result == false){
                     //ready for result storage.
@@ -116,6 +134,7 @@ class TestResults (input: TestContainer) {
                 }
 
             }
+            //saves results.
             if (LeftMode[input] == 4){
                 //add result to result value map. final value is stored.
                 ValuesMap[input] = LeftValue[input]!!
@@ -198,6 +217,10 @@ class TestResults (input: TestContainer) {
         return resultsMap
     }
 
+    fun getValues(): HashMap<Pair<Int,Int>, Int> {
+        return ValuesMap
+    }
+
     fun incrementControl(){
         liarPoints ++
     }
@@ -254,10 +277,10 @@ class TestResults (input: TestContainer) {
         var result = 0;
         //range from lowest brightness to highest. -25, -24, -23, -22, -21 etc.
         if (decreasing){
-            result = brightness -4;
+            result = brightness - 4
         }
         if (!decreasing){
-            result = brightness +2
+            result = brightness + 4
         }
         if (result < -25)
             result = -25
