@@ -19,6 +19,8 @@
         <activity
             android:name=".ConfigureActivity"
             android:label="@string/title_activity_settings" />
+        <activity android:name=".TestActivity"
+            android:label="Test"/>
     </application>
 
 </manifest>

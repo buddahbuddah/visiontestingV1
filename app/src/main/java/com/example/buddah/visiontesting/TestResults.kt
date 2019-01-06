@@ -148,6 +148,83 @@ class TestResults (input: TestContainer) {
             println("Input in ListLeft")
             println(RightMode[input])
 
+            //mode 0
+            //if seen, switch to 1, decrease
+            //if not, switch to 2, increase
+            if (RightMode[input] == 0){
+                if (result == true){
+                    println("changing to 1")
+                    RightMode[input] = 1
+                    //decrease brightness
+                    var temp = ChangeBrightness(RightValue[input]!!, true)
+                    RightValue[input] = temp
+                }else{
+                    println("changing to 2")
+                    RightMode[input] = 2
+                    //increase brightness
+                    var temp = ChangeBrightness(RightValue[input]!!, false)
+                    RightValue[input] = temp
+                }
+            }
+            //mode 1
+            //if seen, decrease brightness stay
+            //if not , change to four
+            if (RightMode[input] == 1){
+                if (result == false){
+                    println("changing to four")
+                    RightMode[input] = 4
+                    //increase brightness
+                    //var temp = ChangeBrightness(LeftValue[input]!!, false)
+                    //LeftValue[input] = temp
+                } else {
+                    //decrease brightness
+                    var temp = ChangeBrightness(RightValue[input]!!, true)
+                    RightValue[input] = temp
+                }
+            }
+            //mode 2
+            //if seen, change to decrease brightness again 3
+            //if not, increase brightness stay
+            if (RightMode[input] == 2){
+                if (result == true){
+                    //check lowest bound
+                    println("changing to 3")
+                    RightMode[input] = 3
+                }else{
+                    //increase brightness
+                    if (RightValue[input] == 0){
+                        RightValue[input] = 1
+                        RightMode[input] = 4
+                    }
+                    var temp = ChangeBrightness(RightValue[input]!!, false)
+                    RightValue[input] = temp
+                }
+            }
+            //mode 3
+            //if seen, continue decreasing brightness
+            //if not, ready for storage.
+
+            if (RightMode[input] == 3){
+                if (result == false){
+                    //ready for result storage.
+                    print("changing to 4")
+                    RightMode[input] = 4
+                }else{
+                    //decrease brightness.
+                    var temp = ChangeBrightness(RightValue[input]!!, true)
+                    RightValue[input] = temp
+                }
+
+            }
+            //saves results.
+            if (RightMode[input] == 4){
+                //add result to result value map. final value is stored.
+                ValuesMap[input] = RightValue[input]!!
+                println("Values Map Stored: ")
+                println(ValuesMap[input])
+                println(input)
+            }
+/*
             if (RightMode[input] == 0){
                 if (result == true){
                     println("changing to 1")
@@ -206,7 +283,7 @@ class TestResults (input: TestContainer) {
                 println(ValuesMap[input])
                 println(input)
             }
-
+*/
         }
 
         resultsMap[input] = result;

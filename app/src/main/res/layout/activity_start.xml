@@ -2,8 +2,10 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000">
 
     <Button
         android:id="@+id/StartTest"
@@ -49,19 +51,37 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="350dp"
-        android:layout_height="99dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="297dp"
+        android:layout_height="136dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:text="Welcome to VisionTesting. Please configure if this is your
-        first time using the app"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Welcome to VisionTesting: Please configure before testing. Be sure to screencap after test is over"
+        android:textColor="#FFF"
         app:layout_constraintBottom_toTopOf="@+id/StartTest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.986" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <TextView
+            android:id="@+id/textView"
+            android:layout_width="350dp"
+            android:layout_height="99dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Welcome to VisionTesting. Please configure if this is your
+            first time using the app"
+            app:layout_constraintBottom_toTopOf="@+id/StartTest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.986" />
+    -->
 </android.support.constraint.ConstraintLayout>

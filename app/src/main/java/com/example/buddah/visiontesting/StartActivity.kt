@@ -20,12 +20,13 @@ class StartActivity : AppCompatActivity() {
 
         val startButton = findViewById<Button>(R.id.StartTest)
         startButton.setOnClickListener {
-            setContentView(R.layout.activity_test)
+            //setContentView(R.layout.activity_test)
+            LaunchTest()
         }
 
         val configureButton = findViewById<Button>(R.id.Configuration)
         configureButton.setOnClickListener {
-            Launch()
+            LaunchConfiguration()
         }
 
         val checkButton = findViewById<Button>(R.id.Check)
@@ -35,7 +36,12 @@ class StartActivity : AppCompatActivity() {
 
     }
 
-    private fun Launch(){
+    private fun LaunchTest(){
+        val intent = Intent(this, TestActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun LaunchConfiguration(){
         val intent = Intent(this, ConfigureActivity::class.java)
         startActivity(intent)
     }
