@@ -18,7 +18,7 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private val thread: TestThread
     private val clickPlayer = MediaPlayer.create(context, R.raw.click)
     private val TestContainer = TestContainer()
-    private val Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.whitecircle10pxffffff))
+    private var Spot = Spot(BitmapFactory.decodeResource(resources, R.drawable.whitecircle10pxffffff))
     private val Center = Spot(BitmapFactory.decodeResource(resources, R.drawable.redcircle10px))
     private val background = Spot(BitmapFactory.decodeResource(resources, R.drawable.backgroundddddd))
     private var TestResults = TestResults(TestContainer)
@@ -30,6 +30,7 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
     private var finalTestCount: Int
 
     init {
+        ChooseSpot()
         Side = false
         threadControl = false
         resultsBoolean = false
@@ -38,6 +39,24 @@ class TestView(context: Context, attributes: AttributeSet) : SurfaceView(context
         pauseChecker = 0
         finalTestCount = 0
         thread = TestThread(holder, this)
+    }
+
+    fun ChooseSpot(){
+        val mImageIds = arrayOf(R.drawable.transcircle10ffffff,
+                R.drawable.transcircle15ffffff,
+                R.drawable.transcircle20ffffff,
+                R.drawable.transcircle24ffffff,
+                R.drawable.transcircle30ffffff,
+                R.drawable.transcircle35ffffff,
+                R.drawable.transcircle40ffffff,
+                R.drawable.transcircle45ffffff)
+        val fIn = context.openFileInput("configure.txt")
+        val fileContentsInt = fIn.read()
+        fIn.close()
+        println("The value of configure file is: " + fileContentsInt)
+        Spot = Spot(BitmapFactory.decodeResource(resources, mImageIds[fileContentsInt]))
+
+
     }
 
     fun updateResults(verdict: Boolean){

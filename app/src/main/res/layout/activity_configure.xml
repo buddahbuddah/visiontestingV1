@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <Button
+        android:id="@+id/previous_btn"
+        android:layout_width="124dip"
+        android:layout_height="wrap_content"
+        android:text="Previous"
+        />
+
+    <Button
+        android:id="@+id/next_btn"
+        android:layout_width="124dip"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/previous_btn"
+        android:text="Next"
+        />
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="124dip"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/next_btn"
+        android:text="Save"
+        />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="289dp"
+        android:layout_below="@+id/previous_btn"
+        android:src="@drawable/grid12by12" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="319dp"
+        android:layout_height="299dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="65dp"
+        android:layout_marginLeft="65dp"
+        android:layout_marginTop="48dp"
+        android:scaleType="centerInside" />
+
+
+</RelativeLayout>

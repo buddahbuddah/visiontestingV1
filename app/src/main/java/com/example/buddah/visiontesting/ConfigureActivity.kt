@@ -16,7 +16,14 @@ class ConfigureActivity : Activity(), View.OnClickListener {
     internal var image_index = 0
     internal var toSave = 0
 
-    private val mImageIds = intArrayOf(R.drawable.redcircle25px, R.drawable.redcircle10px)
+    private val mImageIds = intArrayOf(R.drawable.rc10,
+            R.drawable.rc15,
+            R.drawable.rc20,
+            R.drawable.rc25,
+            R.drawable.rc30,
+            R.drawable.rc35,
+            R.drawable.rc40,
+            R.drawable.rc45)
 
     public override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -93,6 +100,6 @@ class ConfigureActivity : Activity(), View.OnClickListener {
     }
 
     companion object {
-        private val MAX_IMAGE_COUNT = 2
+        private val MAX_IMAGE_COUNT = 7
     }
 }
