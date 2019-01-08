@@ -102,18 +102,13 @@ class TestContainer {
 
     }
 
-    fun printList(){
-        println(xListLeft)
-        println(yListLeft)
-    }
-
     fun getPointListLeft(): MutableList<Pair<Int,Int>>{
         val returnList = mutableListOf<Pair<Int, Int>>()
 
         var selector = 0
         var i = 0
         for (x in xListLeft) {
-            if (i < 3) {
+            if (i < 1) {
                 returnList.add(Pair(x, yListLeft.get(selector)))
                 selector++
                 i++
@@ -129,7 +124,7 @@ class TestContainer {
         var selector = 0
         var i = 0
         for (x in xListLeft){
-            if (i < 3) {
+            if (i < 1) {
                 val tempPair = Pair(x, yListLeft.get(selector))
                 returnMap[tempPair] = 20
                 selector++
@@ -145,7 +140,7 @@ class TestContainer {
         var selector = 0
         var i = 0
         for (x in xListRight){
-            if (i < 3) {
+            if (i < 1) {
                 returnList.add(Pair(x, yListLeft.get(selector)))
                 selector++
                 i++
@@ -160,7 +155,7 @@ class TestContainer {
         var selector = 0
         var i = 0
         for (x in xListRight){
-            if (i < 3) {
+            if (i < 1) {
                 val tempPair = Pair(x, yListLeft.get(selector))
                 returnMap[tempPair] = 20
                 selector++
@@ -179,7 +174,7 @@ class TestContainer {
         var xMiddle = Resources.getSystem().displayMetrics.widthPixels / 2
         var yMiddle = Resources.getSystem().displayMetrics.heightPixels / 2
         var xMiddleLeft = Resources.getSystem().displayMetrics.widthPixels / 4
-        var xMiddleRight = Resources.getSystem().displayMetrics.widthPixels / 4 + xMiddle
+        var xMiddleRight = Resources.getSystem().displayMetrics.widthPixels / 4+ xMiddle
 
         //first row
         xListLeft.add(xMiddleLeft / 2)
@@ -376,6 +371,62 @@ class TestContainer {
         for (x in xListLeft) {
             xListRight.add(x + xMiddle)
         }
+    }
+
+
+    //        objects
+    companion object {
+
+        val _one = arrayListOf(
+                R.drawable.one10, R.drawable.one15, R.drawable.one20, R.drawable.one25)
+        val _two = arrayListOf(
+                R.drawable.two10, R.drawable.two15, R.drawable.two20, R.drawable.two25)
+        val _three = arrayListOf(
+                R.drawable.three10, R.drawable.three15, R.drawable.three20, R.drawable.three25)
+        val _four = arrayListOf(
+                R.drawable.four10, R.drawable.four15, R.drawable.four20, R.drawable.four25)
+        val _five = arrayListOf(
+                R.drawable.five10, R.drawable.five15, R.drawable.five20, R.drawable.five25)
+        val _six = arrayListOf(
+                R.drawable.six10, R.drawable.six15, R.drawable.six20, R.drawable.six25)
+        val _seven = arrayListOf(
+                R.drawable.seven10, R.drawable.seven15, R.drawable.seven20, R.drawable. seven25)
+        val _eight = arrayListOf(
+                R.drawable.eight10, R.drawable.eight15, R.drawable.eight20, R.drawable.eight25)
+        val _nine = arrayListOf(
+                R.drawable.nine10, R.drawable.nine15, R.drawable.nine20, R.drawable.nine25)
+        val _ten = arrayListOf(
+                R.drawable.ten10, R.drawable.ten15, R.drawable.ten20, R.drawable.ten25)
+        val _eleven = arrayListOf(
+                R.drawable.eleven10, R.drawable.eleven15, R.drawable.eleven20, R.drawable.eleven25)
+        val _twelve = arrayListOf(
+                R.drawable.twelve10, R.drawable.twelve15, R.drawable.twelve20, R.drawable.twelve25)
+        val _thirteen = arrayListOf(
+                R.drawable.thirteen10, R.drawable.thirteen15, R.drawable.thirteen20, R.drawable.thirteen25)
+        val _fourteen = arrayListOf(
+                R.drawable.fourteen10, R.drawable.fourteen15, R.drawable.fourteen20, R.drawable.fourteen25)
+        val _fifteen = arrayListOf(
+                R.drawable.fifteen10, R.drawable.fifteen15, R.drawable.fifteen20, R.drawable.fifteen25)
+        val _sixteen = arrayListOf(
+                R.drawable.sixteen10, R.drawable.sixteen15, R.drawable.sixteen20, R.drawable.sixteen25)
+        val _seventeen = arrayListOf(
+                R.drawable.seventeen10, R.drawable.seven15, R.drawable.seventeen20, R.drawable.seventeen25)
+        val _eighteen = arrayListOf(
+                R.drawable.eighteen10, R.drawable.eighteen15, R.drawable.eighteen20, R.drawable.eighteen25)
+        val _nineteen = arrayListOf(
+                R.drawable.nineteen10, R.drawable.nineteen15, R.drawable.nineteen20, R.drawable.nineteen25)
+        val _twenty = arrayListOf(
+                R.drawable.twenty10, R.drawable.twenty15, R.drawable.twenty20, R.drawable.twenty25)
+        val _twentyone = arrayListOf(
+                R.drawable.twentyone10, R.drawable.twentyone15, R.drawable.twentyone20, R.drawable.twentyone25)
+        val _twentytwo = arrayListOf(
+                R.drawable.twentytwo10, R.drawable.twentytwo15, R.drawable.twentytwo20, R.drawable.twentytwo25)
+        val _twentythree = arrayListOf(
+                R.drawable.twentythree10, R.drawable.twentythree15, R.drawable.twentythree20, R.drawable.twentythree25)
+        val _twentyfour = arrayListOf(
+                R.drawable.twentyfour10, R.drawable.twentyfour15, R.drawable.twentyfour20, R.drawable.twentyfour25)
+        val _twentyfive = arrayListOf(
+                R.drawable.twentyfive10, R.drawable.twentyfive15, R.drawable.twentyfive20, R.drawable.twentyfive25)
     }
 
 }

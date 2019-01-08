@@ -45,4 +45,5 @@ class Spot(var image: Bitmap) {
 
         return paint
     }
+
 }

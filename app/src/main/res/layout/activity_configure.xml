@@ -35,17 +35,18 @@
         android:layout_width="match_parent"
         android:layout_height="289dp"
         android:layout_below="@+id/previous_btn"
-        android:src="@drawable/grid12by12" />
+        android:src="@drawable/width25small"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="319dp"
-        android:layout_height="299dp"
+        android:layout_width="match_parent"
+        android:layout_height="291dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="65dp"
-        android:layout_marginLeft="65dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="48dp"
         android:scaleType="centerInside" />
 

@@ -351,7 +351,7 @@ class TestResults (input: TestContainer) {
 
     fun ChangeBrightness(brightness: Int, decreasing: Boolean): Int{
 
-        var result = 0;
+        var result = 0
         //range from lowest brightness to highest. -25, -24, -23, -22, -21 etc.
         if (decreasing){
             result = brightness - 4
@@ -362,7 +362,7 @@ class TestResults (input: TestContainer) {
         if (result < -25)
             result = -25
         if (result > 0)
-            result = 0
+            result = 1
 
         return result
 
