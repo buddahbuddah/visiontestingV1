@@ -1,9 +1,7 @@
 package com.example.buddah.visiontesting
 
-import java.lang.Thread.sleep
 
 class TestResults (input: TestContainer) {
-    //need to move the getting points/updating results to this class.
     val TestContainer = input
     var resultsMap = HashMap<Pair<Int,Int>, Boolean>()
     var ValuesMap = HashMap<Pair<Int,Int>, Int>()
@@ -32,7 +30,9 @@ class TestResults (input: TestContainer) {
         currentPair = temp!!
 
         while (LeftMode[temp] == 4){
+            println("Removing a value")
             ValuesMap[temp!!] = LeftValue[temp]!!
+            println(ValuesMap[temp])
             TestContainer.removeLeft(temp!!)
             temp = TestContainer.getNextPointLeft()
             currentPair = temp!!
@@ -47,7 +47,9 @@ class TestResults (input: TestContainer) {
         currentPair = temp!!
 
         while (RightMode[temp] == 4){
+            println("removing a value")
             ValuesMap[temp!!] = RightValue[temp]!!
+            println(ValuesMap[temp])
             TestContainer.removeRight(temp!!)
             temp = TestContainer.getNextPointRight()
             currentPair = temp!!
@@ -58,14 +60,21 @@ class TestResults (input: TestContainer) {
 
     fun addPoint(input: Pair<Int,Int>){
         pointList.add(input)
-        println(pointList)
     }
 
     fun addResult(input: Pair<Int, Int>, result: Boolean){
 
+        var saveImm = false
+        if (ValuesMap[input] == 1)
+            saveImm = true
+
+
         if (input in ListLeft){
-            println("Input in ListLeft")
             println(LeftMode[input])
+            println(LeftValue)
+            //check for done
+            if (LeftValue[input] == 1)
+                LeftMode[input] = 4
             //mode 0
             //if seen, switch to 1, decrease
             //if not, switch to 2, increase
@@ -145,9 +154,11 @@ class TestResults (input: TestContainer) {
 
         }
         if (input in ListRight){
-            println("Input in ListLeft")
             println(RightMode[input])
-
+            println(RightValue)
+            //check if done
+            if (RightValue[input] == 1)
+                RightMode[input] = 4
             //mode 0
             //if seen, switch to 1, decrease
             //if not, switch to 2, increase
@@ -224,66 +235,6 @@ class TestResults (input: TestContainer) {
                 println(ValuesMap[input])
                 println(input)
             }
-/*
-            if (RightMode[input] == 0){
-                if (result == true){
-                    println("changing to 1")
-                    RightMode[input] = 1
-                    //decrease brightness
-                    var temp = ChangeBrightness(RightValue[input]!!, true)
-                    RightValue[input] = temp
-                }else{
-                    println("changing to 2")
-                    RightMode[input] = 2
-                    //increase brightness
-                    var temp = ChangeBrightness(RightValue[input]!!, false)
-                    RightValue[input] = temp
-                }
-            }
-            if (RightMode[input] == 1){
-                if (result == false){
-                    println("changing to four")
-                    RightMode[input] = 4
-                    //increase brightness
-                    //var temp = ChangeBrightness(LeftValue[input]!!, false)
-                    //LeftValue[input] = temp
-                } else {
-                    //decrease brightness
-                    var temp = ChangeBrightness(RightValue[input]!!, true)
-                    RightValue[input] = temp
-                }
-            }
-            if (RightMode[input] == 2){
-                if (result == true){
-                    //ready for result storage.
-                    println("changing to 3")
-                    RightMode[input] = 3
-                }else{
-                    //increase brightness
-                    var temp = ChangeBrightness(RightValue[input]!!, false)
-                    RightValue[input] = temp
-                }
-            }
-            if (RightMode[input] == 3){
-                if (result == false){
-                    //ready for result storage.
-                    println("changing to 4")
-                    RightMode[input] = 4
-                }else{
-                    //decrease brightness.
-                    var temp = ChangeBrightness(RightValue[input]!!, true)
-                    RightValue[input] = temp
-                }
-
-            }
-            if (RightMode[input] == 4){
-                //add result to result value map. final value is stored.
-                ValuesMap[input] = RightValue[input]!!
-                println("Values Map Stored: ")
-                println(ValuesMap[input])
-                println(input)
-            }
-*/
         }
 
         resultsMap[input] = result;
@@ -354,10 +305,10 @@ class TestResults (input: TestContainer) {
         var result = 0
         //range from lowest brightness to highest. -25, -24, -23, -22, -21 etc.
         if (decreasing){
-            result = brightness - 4
+            result = brightness - 2
         }
         if (!decreasing){
-            result = brightness + 4
+            result = brightness + 3
         }
         if (result < -25)
             result = -25
